@@ -7,11 +7,11 @@ import android.arch.persistence.room.PrimaryKey;
 
 @Entity
 public class MoodData {
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey()
     private int id;
 
-    @ColumnInfo(name = "date")
-    private String date;
+    @ColumnInfo(name = "size")
+    private int size;
 
     @ColumnInfo(name = "comment")
     private String comment;
@@ -19,10 +19,15 @@ public class MoodData {
     @ColumnInfo(name = "color")
     private int color;
 
-    public MoodData(String date, String comment, int color) {
-        this.date = date;
+    public MoodData(int id, int size, String comment, int color) {
+        this.id = id;
+        this.size = size;
         this.comment = comment;
         this.color = color;
+    }
+
+    public MoodData(){
+
     }
 
 
@@ -35,12 +40,12 @@ public class MoodData {
         this.id = id;
     }
 
-    public String getDate() {
-        return date;
+    public int getSize() {
+        return size;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setSize(int size) {
+        this.size = size;
     }
 
     public String getComment() {

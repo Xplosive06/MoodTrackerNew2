@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">Mood Tracker</string>
-    <string name="commentaire">Commentaire</string>
+    <string name="comment">Commentaire</string>
     <string name="button_to_write_a_comment">Button to write a comment</string>
     <string name="button_to_get_the_comments_history">Button to get the comments history</string>
+    <string name="button7">Il y a une semaine</string>
+    <string name="button6">Il y a six jours</string>
+    <string name="button5">Il y a cinq jours</string>
+    <string name="button4">Il y a quatre jours</string>
+    <string name="button3">Il y a trois jours</string>
+    <string name="button2">Avant-hier</string>
+    <string name="button1">Hier</string>
 </resources>

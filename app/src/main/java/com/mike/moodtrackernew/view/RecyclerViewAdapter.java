@@ -59,7 +59,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull TestViewHolder holder, int position) {
         MoodData currentItem = mMoodDataList.get(position);
 
-        holder.mDateView.setText(currentItem.getDate());
+        holder.mDateView.setText(String.valueOf(currentItem.getId()));
         holder.mTextView1.setText(currentItem.getComment());
 
     }
