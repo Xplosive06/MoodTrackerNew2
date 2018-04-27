@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     int[] mColorList;
     int mCurrentColor;
     int mCurrentPosition;
-    String mCurrentDay;
+    int mCurrentDay;
     List<MoodData> mMoodDataArrayList;
     AppDataBase db;
 
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
         Calendar c = Calendar.getInstance();
         DateFormat df = new SimpleDateFormat("dd");
-        mCurrentDay = df.format(c.getTime());
+        mCurrentDay = Integer.parseInt(df.format(c.getTime()));
         mMoodDataArrayList = new ArrayList<>();
 
 
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 mComment = mEditTextComment.getText().toString();
-                db.mMoodDataDAO().insertAll(new MoodData(mCurrentDay, mComment, mCurrentColor));
+                db.mMoodDataDAO().insertAll(new MoodData(mCurrentDay,12, mComment, mCurrentColor));
                 Log.d("Test", "Today is: " + mCurrentDay);
                 Toast.makeText(getBaseContext(), "Humeur actuelle enregistrée.\nVotre commentaire pour aujourd'hui : " + mComment, Toast.LENGTH_LONG).show();
 
