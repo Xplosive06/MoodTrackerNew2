@@ -10,4 +10,11 @@
     <string name="button3">Il y a trois jours</string>
     <string name="button2">Avant-hier</string>
     <string name="button1">Hier</string>
+    <string name="hier">Hier</string>
+    <string name="avant_hier">Avant-hier</string>
+    <string name="il_y_a_trois_jours">Il y a trois jours</string>
+    <string name="il_y_a_quatre_jours">Il y a quatre jours</string>
+    <string name="il_y_a_cinq_jours">Il y a cinq jours</string>
+    <string name="il_y_a_six_jours">Il y a six jours</string>
+    <string name="il_y_a_une_semaine">Il y a une semaine</string>
 </resources>

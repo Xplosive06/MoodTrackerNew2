@@ -11,7 +11,7 @@ public class MoodData {
     private int id;
 
     @ColumnInfo(name = "size")
-    private int size;
+    private float size;
 
     @ColumnInfo(name = "comment")
     private String comment;
@@ -19,18 +19,12 @@ public class MoodData {
     @ColumnInfo(name = "color")
     private int color;
 
-    public MoodData(int id, int size, String comment, int color) {
+    public MoodData(int id, float size, String comment, int color) {
         this.id = id;
         this.size = size;
         this.comment = comment;
         this.color = color;
     }
-
-    public MoodData(){
-
-    }
-
-
 
     public int getId() {
         return id;
@@ -40,11 +34,11 @@ public class MoodData {
         this.id = id;
     }
 
-    public int getSize() {
+    public float getSize() {
         return size;
     }
 
-    public void setSize(int size) {
+    public void setSize(float size) {
         this.size = size;
     }
 
