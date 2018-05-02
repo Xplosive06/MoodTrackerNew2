@@ -3,11 +3,13 @@ package com.mike.moodtrackernew.controller;
 import android.arch.persistence.room.Room;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Point;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         mButtonHistory = findViewById(R.id.history);
 
         Calendar c = Calendar.getInstance();
-        DateFormat df = new SimpleDateFormat("dd");
+        DateFormat df = new SimpleDateFormat("D");
         mCurrentDay = Integer.parseInt(df.format(c.getTime()));
         mMoodDataArrayList = new ArrayList<>();
 
@@ -101,8 +103,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 mComment = mEditTextComment.getText().toString();
-                db.mMoodDataDAO().insertAll(new MoodData(mCurrentDay,12, mComment, mCurrentColor));
-                Log.d("Test", "Today is: " + mCurrentDay);
+                float buttonSize = buttonSize(mCurrentPosition);
+                db.mMoodDataDAO().insertAll(new MoodData(mCurrentDay,buttonSize, mComment, mCurrentColor));
+                Log.d("Test", "Today is: " + mCurrentDay + "Current color is: " + mCurrentColor + "mCurrent position: " + mCurrentPosition);
                 Toast.makeText(getBaseContext(), "Humeur actuelle enregistrée.\nVotre commentaire pour aujourd'hui : " + mComment, Toast.LENGTH_LONG).show();
 
             }
@@ -112,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.light_blue));
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.light_blue));
     }
+
 
     private void createVerticalViewPager() {
 
@@ -133,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                 //Change the mViewPager's background depending to his position
                 mViewPager.setBackgroundColor(getResources().getColor(mColorList[position]));
                 Log.d("Test", "Position is:" + position);
-                mCurrentColor = mColorList[position];
+                mCurrentColor = getResources().getColor(mColorList[position]);
                 mCurrentPosition = position;
                 Log.d("Test", "currentColor is: " + mCurrentColor);
 
@@ -146,9 +150,18 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+    private float buttonSize(int currentPosition) {
+        currentPosition = mCurrentPosition+1;
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+
+        Log.d("Test", "Screen width: " + width);
+        return width/currentPosition;
 
 
-
+    }
 
 }
 
