@@ -1,5 +1,6 @@
 package com.mike.moodtrackernew.controller;
 
+import android.annotation.SuppressLint;
 import android.arch.persistence.room.Room;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,37 +31,46 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    VerticalViewPager mViewPager;
-    VerticalViewAdapter mAdapter;
-    EditText mEditTextComment;
-    String mComment;
+    private VerticalViewPager mViewPager;
+    private EditText mEditTextComment;
+    private String mComment;
 
-    ImageButton mButtonAddAComment;
-    ImageButton mButtonHistory;
-    int[] mColorList;
-    int mCurrentColor;
-    int mCurrentPosition;
-    int mCurrentDay;
-    List<MoodData> mMoodDataArrayList;
-    AppDataBase db;
+    private int[] mColorList;
+    private int mCurrentColor;
+    private int mCurrentPosition;
+    private int mCurrentDay;
+    protected List<MoodData> mMoodDataArrayList;
+    private AppDataBase db;
+    private static final String COMMENT_TITLE = "Humeur actuelle enregistrée.\nVotre commentaire pour aujourd'hui : ";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mColorList = new int[]{R.color.banana_yellow, R.color.light_sage, R.color.cornflower_blue_65, R.color.warm_grey, R.color.faded_red};
-        mButtonAddAComment = findViewById(R.id.addAComment);
-        mButtonHistory = findViewById(R.id.history);
+        ImageButton buttonHistory = findViewById(R.id.history);
+        ImageButton buttonGraphic = findViewById(R.id.graphic);
 
         Calendar c = Calendar.getInstance();
-        DateFormat df = new SimpleDateFormat("D");
+        @SuppressLint("SimpleDateFormat") DateFormat df = new SimpleDateFormat("D");
         mCurrentDay = Integer.parseInt(df.format(c.getTime()));
         mMoodDataArrayList = new ArrayList<>();
 
 
         createVerticalViewPager();
 
-        mButtonHistory.setOnClickListener(new View.OnClickListener() {
+        buttonGraphic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent graphicActivityIntent = new Intent(MainActivity.this, GraphicActivity.class);
+
+                Log.d("Test", "Intent on GraphicActivity!");
+
+                startActivity(graphicActivityIntent);
+            }
+        });
+
+        buttonHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent historyActivityIntent = new Intent(MainActivity.this, HistoryActivity.class);
@@ -75,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void buttonClicked(View view) {
         LayoutInflater inflater = getLayoutInflater();
-        View alertLayout = inflater.inflate(R.layout.pop_up_comment, null);
+        @SuppressLint("InflateParams") View alertLayout = inflater.inflate(R.layout.pop_up_comment, null);
         mEditTextComment = alertLayout.findViewById(R.id.comment);
 
         //Passer en background thread
@@ -103,10 +113,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 mComment = mEditTextComment.getText().toString();
-                float buttonSize = buttonSize(mCurrentPosition);
-                db.mMoodDataDAO().insertAll(new MoodData(mCurrentDay,buttonSize, mComment, mCurrentColor));
+                db.mMoodDataDAO().insertAll(new MoodData(mCurrentDay,mCurrentPosition, mComment, mCurrentColor));
                 Log.d("Test", "Today is: " + mCurrentDay + "Current color is: " + mCurrentColor + "mCurrent position: " + mCurrentPosition);
-                Toast.makeText(getBaseContext(), "Humeur actuelle enregistrée.\nVotre commentaire pour aujourd'hui : " + mComment, Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), COMMENT_TITLE + mComment, Toast.LENGTH_LONG).show();
 
             }
         });
@@ -119,12 +128,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void createVerticalViewPager() {
 
-        mAdapter = new VerticalViewAdapter(this);
+        VerticalViewAdapter adapter = new VerticalViewAdapter(this);
 
         mViewPager = findViewById(R.id.verticalViewPager);
-        mViewPager.setAdapter(mAdapter);
+        mViewPager.setAdapter(adapter);
         mViewPager.setCurrentItem(1);
         mViewPager.setBackgroundColor(getResources().getColor(R.color.light_sage));
+        mCurrentColor = getResources().getColor(mColorList[1]);
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -150,18 +160,31 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-    private float buttonSize(int currentPosition) {
-        currentPosition = mCurrentPosition+1;
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x;
-
-        Log.d("Test", "Screen width: " + width);
-        return width/currentPosition;
 
 
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }
 

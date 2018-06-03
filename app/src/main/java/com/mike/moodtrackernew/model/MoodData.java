@@ -10,8 +10,8 @@ public class MoodData {
     @PrimaryKey()
     private int id;
 
-    @ColumnInfo(name = "size")
-    private float size;
+    @ColumnInfo(name = "position")
+    private int position;
 
     @ColumnInfo(name = "comment")
     private String comment;
@@ -19,9 +19,9 @@ public class MoodData {
     @ColumnInfo(name = "color")
     private int color;
 
-    public MoodData(int id, float size, String comment, int color) {
+    public MoodData(int id, int position, String comment, int color) {
         this.id = id;
-        this.size = size;
+        this.position = position;
         this.comment = comment;
         this.color = color;
     }
@@ -34,12 +34,12 @@ public class MoodData {
         this.id = id;
     }
 
-    public float getSize() {
-        return size;
+    public int getPosition() {
+        return position;
     }
 
-    public void setSize(float size) {
-        this.size = size;
+    public void setPosition(int position) {
+        this.position = position;
     }
 
     public String getComment() {

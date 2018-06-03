@@ -13,7 +13,7 @@ public interface MoodDataDAO {
     MoodData[] loadAllMoodFromYesterday(int currentDay, int currentDay1);
 
     @Query("SELECT * FROM mooddata")
-    List<MoodData> getAllMoodData();
+    MoodData[] getAllMoodData();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(MoodData... moodData);
