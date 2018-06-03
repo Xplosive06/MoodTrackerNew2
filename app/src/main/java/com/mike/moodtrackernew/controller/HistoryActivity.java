@@ -1,9 +1,8 @@
 package com.mike.moodtrackernew.controller;
 
+
 import android.arch.persistence.room.Room;
-import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -60,13 +59,14 @@ public class HistoryActivity extends AppCompatActivity {
                 .build();
         mMoodDataList = new ArrayList<>(Arrays.asList(db.mMoodDataDAO().loadAllMoodFromYesterday(mCurrentDay2, mCurrentDay1)));
 //        Collections.reverse(mMoodDataList);
-        Log.d("BDD", String.valueOf("AllMoodData: " + db.mMoodDataDAO().getAllMoodData().size()) + " mMoodDataList: " + String.valueOf(mMoodDataList.size()));
+//        Log.d("BDD", String.valueOf("AllMoodData: " + db.mMoodDataDAO().getAllMoodData().size()) + " mMoodDataList: " + String.valueOf(mMoodDataList.size()));
 
         if(!mMoodDataList.isEmpty()){
-            updateData();
-        mMoodDataList2 = new ArrayList<>(Arrays.asList(db.mMoodDataDAO().loadAllMoodFromYesterday(mCurrentDay2, mCurrentDay1)));
-        Collections.reverse(mMoodDataList2);
-        ChangeButtonsData();}
+
+            mMoodDataList2 = new ArrayList<>(Arrays.asList(db.mMoodDataDAO().loadAllMoodFromYesterday(mCurrentDay2, mCurrentDay1)));
+            Collections.reverse(mMoodDataList2);
+//            updateData();
+            ChangeButtonsData();}
 
 //        Log.d("BDD", String.valueOf(db.mMoodDataDAO().getAllMoodData().size()) + " mMoodDataList: " + String.valueOf(mMoodDataList.size()));
 
@@ -75,27 +75,26 @@ public class HistoryActivity extends AppCompatActivity {
     }
 
     private void updateData() {
-        testList = new ArrayList<>();
-        for(int i = 0; i<mMoodDataList.size(); i++){
-            testList.add(mMoodDataList.get(i).getId());
-        }
-        int first = testList.get(0);
-        int last = testList.get(testList.size()-1);
-        for(int i=first+1; i<last; i++){
-            if(!testList.contains(i))
-                db.mMoodDataDAO().insertAll(new MoodData(i,333, EMPTY, R.color.colorPrimaryDark));
+        int first = mMoodDataList2.get(0).getId();
+        int last = mCurrentDay1;
+
+        for (int i = first; i<last; i++){
+            for (int j = 0; j<last; j++){
+                if(mMoodDataList2.get(j).getId() != i){
+                    mMoodDataList2.add(new MoodData(j, 4, "Vide", 4));
+
+                }
+            }
+
         }
     }
 
     private void ChangeButtonsData() {
         for (int i = 0; i < mMoodDataList2.size(); i++) {
-            if (mMoodDataList2.isEmpty()/*|| mMoodDataList.get(i).getId()-1 != mMoodDataList.get(i+1).getId()*/)  {
-                mMoodDataList2.add(/*i+1, */new MoodData(mCurrentDay, 69, "Rien d'enregistré pour ce jour.", R.color.colorPrimaryDark));
-                Log.d("BDD", "  " + mMoodDataList2.get(i).getId());
-            }else{mButtonList.get(i).setBackgroundColor(mMoodDataList2.get(i).getColor());
+            mButtonList.get(i).setBackgroundColor(mMoodDataList2.get(i).getColor());
                 Log.d("BDD", "  " + mMoodDataList2.get(i).getColor());
                 LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mButtonList.get(i).getLayoutParams();
-                params.width = Math.round(mMoodDataList2.get(i).getSize());
+                params.width = (int) CalculateButtonSize(mMoodDataList2.get(i).getPosition());
                 mButtonList.get(i).setLayoutParams(params);
                 final int finalI = i;
                 mButtonList.get(i).setOnClickListener(new View.OnClickListener() {
@@ -105,8 +104,46 @@ public class HistoryActivity extends AppCompatActivity {
 
                     }
                 });
-            }
+
         }
+    }
+
+    private float CalculateButtonSize(int position) {
+        int[] sizeInPercent = {100, 80, 60, 40, 20};
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        float width = size.x;
+
+        Log.d("Test", "Screen width: " + width);
+        return (width/ 100) * sizeInPercent[position];
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
 }
